@@ -22,10 +22,43 @@ jobs:
       uses: actions/checkout@v2
 
     - name: 'Run login az'
-      run : |
+      run: |
         az account set --subscription 7b2c8510-cb1a-4eff-b866-29eb206b33b0
         az aks get-credentials --resource-group Exo1_group --name Exo1 --overwrite-existing
-        kubectl config set-context --current --namespace=workspace-alc-2000
+        # Get the Git user's email
+        git_email=$(git config user.email)
+    
+        # Check if git_email is empty
+        if [ -z "$git_email" ]; then
+          # Fallback to GitHub user email
+          github_email=$(curl -sSL "https://api.github.com/users/${GITHUB_ACTOR}" | jq -r '.email')
+          if [ "$github_email" != "null" ]; then
+            git_email="$github_email"
+          else
+            echo "No email associated with GitHub user     ${GITHUB_ACTOR}"
+            # Handle this case accordingly, for example, exit with an error
+            exit 1
+          fi
+        fi
+    
+        # Switch case to set namespace based on email
+        case "$git_email" in
+            "alex.guillemin@gmail.com")
+                kubectl config set-context --current --namespace=workspace-ag-1998
+                ;;
+            "caramel.alexandre@gmail.com")
+                kubectl config set-context --current --namespace=workspace-alc-2000
+                ;;
+            "benjamin.burstein@edu.devinci.fr")
+                kubectl config set-context --current --namespace=workspace-bjb-2000
+                ;;
+            "martin.deboutray@edu.devinci.fr")
+                kubectl config set-context --current --namespace=workspace-mdb-1997
+                ;;
+            *)
+                echo "No namespace mapping found for this email address."
+                ;;
+        esac
 
     - name: 'Run Azure CLI commands'
       run: |
