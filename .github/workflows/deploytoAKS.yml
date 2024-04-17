@@ -25,6 +25,8 @@ jobs:
       run : |
         az account set --subscription 7b2c8510-cb1a-4eff-b866-29eb206b33b0
         az aks get-credentials --resource-group Exo1_group --name Exo1 --overwrite-existing
+        email_git=$(git config user.email)
+        echo $email_git
         kubectl config set-context --current --namespace=workspace-alc-2000
 
     - name: 'Run Azure CLI commands'
