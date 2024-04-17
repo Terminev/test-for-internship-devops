@@ -25,9 +25,21 @@ jobs:
       run : |
         az account set --subscription 7b2c8510-cb1a-4eff-b866-29eb206b33b0
         az aks get-credentials --resource-group Exo1_group --name Exo1 --overwrite-existing
-        email_git=$(git config user.email)
-        echo $email_git
-        kubectl config set-context --current --namespace=workspace-alc-2000
+        
+        case ${{ github.actor }} in 
+          "SunnyBenji") 
+            kubectl config set-context --current --namespace=workspace-bjb-2000
+            ;;
+          "Terminev") 
+            kubectl config set-context --current --namespace=workspace-alc-2000
+            ;;
+          "AlexGuillemin91") 
+            kubectl config set-context --current --namespace=workspace-ag-1998
+            ;;
+          *)
+            echo "No matching namespace found for user: $github_actor"
+            ;;
+        esac
 
     - name: 'Run Azure CLI commands'
       run: |
