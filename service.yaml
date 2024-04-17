@@ -4,7 +4,7 @@ metadata:
   name: githubactions-aks-demo-service
 spec:
   selector:
-    app: githubactions-aks-demo
+    app: hello-world
   type: LoadBalancer
   ports:
     - port: 8080

@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: hello-world-container
-          image: hello-world-app:latest
+          image: devbaam.azurecr.io/alx-hello-world-app
           ports:
             - containerPort: 3000
