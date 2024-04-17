@@ -39,7 +39,8 @@ jobs:
       run: dotnet build -c release
     
     - name: docker build
-      run: docker tag -t test-for-internship .:'${{github.sha}}' 
+      run: docker build -t test-for-internship:${{ github.sha }} .
+    
  
     - name: Azure Kubernetes set context
       uses: Azure/aks-set-context@v1
