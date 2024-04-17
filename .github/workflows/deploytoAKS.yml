@@ -31,10 +31,13 @@ jobs:
             kubectl config set-context --current --namespace=workspace-bjb-2000
             ;;
           "Terminev") 
-            kubectl config set-context --current --namespace=workspace-bjb-2000
+            kubectl config set-context --current --namespace=workspace-alc-2000
             ;;
           "AlexGuillemin91") 
             kubectl config set-context --current --namespace=workspace-ag-1998
+            ;;
+          "MBoutray") 
+            kubectl config set-context --current --namespace=workspace-mdb-1997
             ;;
           *)
             echo "No matching namespace found for user: $github_actor"
