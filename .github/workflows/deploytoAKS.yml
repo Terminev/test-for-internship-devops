@@ -3,12 +3,12 @@
 name: AKS Deployment
 
 # Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
+# events but only for the main branch
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -33,29 +33,12 @@ jobs:
     
     - name: docker build
       run: docker  -t test-for-internship:'${{github.sha}}' 
-    
-     .
-     .
-     .
-     .
-     .
-     .
-     .
-     .
-     .
-     .
-     .
-     .
-     .
-     .
-     .
-
  
     - name: Azure Kubernetes set context
       uses: Azure/aks-set-context@v1
       with:
         # Azure credentials i.e. output of `az ad sp create-for-rbac --sdk-auth`
-        creds: '${{secrets. ...... }}'
+        creds: '${{secrets.AZURE_CREDENTIALS}}'
         # Resource Group Name
         resource-group: name-aks-rg
         # AKS Cluster Name
@@ -66,15 +49,16 @@ jobs:
       uses: Azure/k8s-create-secret@v1.1
       with:
         # Container registry url
-        container-registry-url: .....
+        container-registry-url: devbaam.azurecr.io
         # Container registry username
-        container-registry-username: '${{secrets. ...... }}'
+        container-registry-username: '${{secrets.AZURE_USERNAME }}'
         # Container registry password
-        container-registry-password:  '${{secrets.   ...... }}'
+        container-registry-password:  '${{secrets.AZURE_PASSWORD }}'
         # Type of Kubernetes secret. For example, docker-registry or generic
-        secret-type: ........
+        secret-type: generic
         # Name of the secret. You can use this secret name in the Kubernetes YAML configuration file.
         secret-name: docker-image-pull-secret
+        namespace: workspace-alc-2000
         
       # Deploy to k8s cluster
     - name: Deploy to Kubernetes cluster
@@ -85,7 +69,7 @@ jobs:
           k8s/deployment.yml
           k8s/service.yml
         # Fully qualified resource URL of the image(s) to be used for substitutions on the manifest files Example: contosodemo.azurecr.io/helloworld:test
-        images: '${{secrets.   ...... }}/  .......  :${{github.sha}}'
+        images: 'devbaam.azurecr.io/helloworld:${{github.sha}}'
         # Name of a docker-registry secret that has already been set up within the cluster. Each of these secret names are added under imagePullSecrets field for the workloads found in the input manifest files
         imagepullsecrets: docker-image-pull-secret
         # deploy/promote/reject
