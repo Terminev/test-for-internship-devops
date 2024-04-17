@@ -48,9 +48,9 @@ jobs:
         # Azure credentials i.e. output of `az ad sp create-for-rbac --sdk-auth`
         creds: '${{secrets.AZURE_CREDENTIALS}}'
         # Resource Group Name
-        resource-group: name-aks-rg
+        resource-group: Exo1_group
         # AKS Cluster Name
-        cluster-name: name-aks-cluster
+        cluster-name: Exo1
 
   # Create K8s secrets to pull images
     - name: Create secret in Kubernetes cluster
