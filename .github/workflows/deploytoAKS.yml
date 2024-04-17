@@ -41,18 +41,18 @@ jobs:
     - name: docker build
       run: docker build -t test-for-internship:${{ github.sha }} .
     
-      
- 
-    - name: Azure Kubernetes set context
-      uses: Azure/aks-set-context@v1
-      with:
-        # Azure credentials i.e. output of `az ad sp create-for-rbac --sdk-auth`
-        creds: '${{secrets.AZURE_CREDENTIALS}}'
-        # Resource Group Name
-        resource-group: Exo1_group
-        # AKS Cluster Name
-        cluster-name: Exo1
 
+ 
+    - uses: azure/login@v1
+      with:
+         creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - uses: azure/aks-set-context@v3
+      with:
+         resource-group: 'Exo1_group'
+         cluster-name: 'Exo1'
+         admin: 'false'
+         use-kubelogin: 'true'
   # Create K8s secrets to pull images
     - name: Create secret in Kubernetes cluster
       uses: Azure/k8s-create-secret@v1.1
