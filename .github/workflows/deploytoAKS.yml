@@ -54,6 +54,11 @@ jobs:
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+    - name: 'Run login az'
+      run : |
+          az account set --subscription 7b2c8510-cb1a-4eff-b866-29eb206b33b0
+          az aks get-credentials --resource-group Exo1_group --name Exo1 --overwrite-existing
+
   # Create K8s secrets to pull images
     - name: Create secret in Kubernetes cluster
       uses: Azure/k8s-create-secret@v1.1
