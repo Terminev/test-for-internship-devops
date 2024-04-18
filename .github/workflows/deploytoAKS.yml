@@ -46,8 +46,12 @@ jobs:
 
     - name: 'Run Azure CLI commands'
       run: |
-        docker build -t devbaam.azurecr.io/alex-hello-world-app .
+        docker build -t devbaam.azurecr.io/alex-hello-world-app:${{github.sha}} .
         az acr login --name devbaam 
-        docker push devbaam.azurecr.io/alex-hello-world-app
+        docker push devbaam.azurecr.io/alex-hello-world-app:${{github.sha}}
+        
+    - name: 'Deploy to AKS'
+      run: |
+        sed -i 's/latest/${{github.sha}}/g' deployment.yaml
         kubectl apply -f deployment.yaml
         kubectl apply -f service.yaml
